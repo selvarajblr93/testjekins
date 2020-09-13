@@ -4,10 +4,17 @@ pipeline{
     stages{
         stage('calling function'){
             steps{
-                steps {
                   echo ">> Run deploy applications "
-               }
             }
        }
    }
+    
+    post { 
+        always { 
+            echo 'I will always say Hello!'
+        }
+        aborted {
+            echo 'I was aborted'
+        }
+    }
 }
