@@ -5,22 +5,26 @@ pipeline{
         stage('calling function'){
             steps{
                   echo ">> Run deploy applications "
-                def changeLogSets = currentBuild.rawBuild.changeSets
-                for (int i = 0; i < changeLogSets.size(); i++) {
-                    def entries = changeLogSets[i].items
-                    for (int j = 0; j < entries.length; j++) {
-                        def entry = entries[j]
-                        echo "${entry.commitId} by ${entry.author} on ${new Date(entry.timestamp)}: ${entry.msg}"
-                        def files = new ArrayList(entry.affectedFiles)
-                        for (int k = 0; k < files.size(); k++) {
-                            def file = files[k]
-                            echo "  ${file.editType.name} ${file.path}"
-                        }
-                    }
-                }
             }
-       }
+        }
+        
+        stage("last-changes") {
+            def publisher = LastChanges.getLastChangesPublisher "LAST_SUCCESSFUL_BUILD", "SIDE", "LINE", true, true, "", "", "", "", ""
+            publisher.publishLastChanges()
+            def changes = publisher.getLastChanges()
+            println(changes.getEscapedDiff())
+
+            for (commit in changes.getCommits()) {
+                println(commit)
+                def commitInfo = commit.getCommitInfo()
+                println(commitInfo)
+                println(commitInfo.getCommitMessage())
+                println(commit.getChanges())
+            }
+        }
    }
+    
+    
     
     post { 
         always { 
