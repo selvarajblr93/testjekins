@@ -1,21 +1,21 @@
-pipeline {
-    /* specify nodes for executing */
-    agent {
-        label 'github-ci'
+node {
+
+def myfun = load 'testfun.groovy'
+pipeline{
+    agent any
+    environment{
+        REPO_PATH='/home/manish/Desktop'
+        APP_NAME='test'
     }
- 
-    stages {
-         stage('Do the deployment') {
-            steps {
-                echo ">> Run deploy applications "
-            }
-        }
-    }
- 
-    /* Cleanup workspace */
-    post {
-       always {
-           deleteDir()
-       }
-   }
+    stages{
+        stage('calling function'){
+            steps{
+                script{
+                    myfun('${REPO_PATH}','${APP_NAME}')
+                }
+             }
+         }
+     }
+  }
+
 }
