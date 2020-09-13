@@ -13,7 +13,8 @@ node {
                         println(commitInfo.getCommitMessage())
                         println(commit.getChanges())
                     }
-            
-        
+                env.WORKSPACE = pwd()
+                def version = readFile "${env.WORKSPACE}/doctest"
+                echo version
    }
 }
