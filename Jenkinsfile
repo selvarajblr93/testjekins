@@ -1,6 +1,5 @@
 node {
         stage('calling function'){
-            steps{
                   echo "Run deploy applications"
                   def publisher = LastChanges.getLastChangesPublisher "LAST_SUCCESSFUL_BUILD", "SIDE", "LINE", true, true, "", "", "", "", ""
                   publisher.publishLastChanges()
@@ -14,7 +13,7 @@ node {
                         println(commitInfo.getCommitMessage())
                         println(commit.getChanges())
                     }
-            }
+            
         
    }
 }
