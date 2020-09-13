@@ -5,6 +5,7 @@ pipeline {
         stage('calling function'){
             steps{
                   echo "Run deploy applications"
+                node(null) {
                   def publisher = LastChanges.getLastChangesPublisher "LAST_SUCCESSFUL_BUILD", "SIDE", "LINE", true, true, "", "", "", "", ""
                   publisher.publishLastChanges()
                   def changes = publisher.getLastChanges()
@@ -20,6 +21,7 @@ pipeline {
                 env.WORKSPACE = pwd()
                 def version = readFile "${env.WORKSPACE}/doctest"
                 echo version
+                }
            }
         }    
     }
