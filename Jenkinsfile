@@ -3,6 +3,7 @@ pipeline {
     agent none
     stages {
         stage('calling function'){
+            steps{
                   echo "Run deploy applications"
                   def publisher = LastChanges.getLastChangesPublisher "LAST_SUCCESSFUL_BUILD", "SIDE", "LINE", true, true, "", "", "", "", ""
                   publisher.publishLastChanges()
@@ -20,6 +21,7 @@ pipeline {
                 def version = readFile "${env.WORKSPACE}/doctest"
                 echo version
            }
+        }    
     }
     post { 
         always { 
