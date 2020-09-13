@@ -1,4 +1,7 @@
-node {
+
+pipeline {
+    agent none
+    stages {
         stage('calling function'){
                   echo "Run deploy applications"
                   def publisher = LastChanges.getLastChangesPublisher "LAST_SUCCESSFUL_BUILD", "SIDE", "LINE", true, true, "", "", "", "", ""
@@ -16,5 +19,11 @@ node {
                 env.WORKSPACE = pwd()
                 def version = readFile "${env.WORKSPACE}/doctest"
                 echo version
-   }
+           }
+    }
+    post { 
+        always { 
+            cleanWs()
+        }
+    }
 }
