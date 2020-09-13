@@ -5,7 +5,7 @@ pipeline {
         stage('calling function'){
             steps{
                   echo "Run deploy applications"
-                node(null) {
+                script {
                   def publisher = LastChanges.getLastChangesPublisher "LAST_SUCCESSFUL_BUILD", "SIDE", "LINE", true, true, "", "", "", "", ""
                   publisher.publishLastChanges()
                   def changes = publisher.getLastChanges()
